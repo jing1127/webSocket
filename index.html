@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script type="text/javascript" src="js/jquery-3.2.1.js" ></script>
+		<style>
+			*{margin:0;padding: 0;}
+			.shows{margin-top:30px;}
+			.box{margin:100px auto;width:300px;}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<input type="text" class="cont" />
+			<input type="button" value="send" id="send" />
+			<input type="button" value="end" id="end" />
+			<div class="shows">返回收据：<span id="back"></span></div>
+		</div>
+		<script>
+//			$("#start").bind("click",function(){
+//				
+//				console.log("正在建立连接..."); 
+//			})
+
+			$("#send").bind("click",function(){
+				var ws = new WebSocket("ws://192.168.2.174:8080/ssm/WsTest/wj");
+				ws.onopen = function(evt) { 
+			 	 	console.log("连接成功"); 
+			  		ws.send($(".cont").val());
+				};
+				ws.onmessage = function(evt) {
+				  	console.log(evt);
+				  	$("#back").html(evt.data);
+				  	
+				};
+				ws.onclose = function(evt) {
+				  	console.log("正在关闭");
+				};      
+			})
+			$("#end").bind("click",function(){
+				ws.close();
+			})
+		</script>
+	</body>
+</html>
